@@ -52,15 +52,48 @@ Note : File name should be with HDL Extension
 	Three Codes shall be written for implementation of 4-bit Adder as follows, 
 
 •	fa.v → Single Bit 3-Input Full Adder [Sub-Module / Function] 
+module full_adder(A,B,CIN,S,COUT);
+input A,B,CIN;
+output S,COUT;
+assign S=A^B^CIN;
+assign COUT=(A&B) | (CIN&(A^B));
+endmodule
 
 •	fa_4bit.v → Top Module for Adding 4-bit Inputs. 
+module fulladd_4bit(A,B,C0,S,C4);
+input [3:0] A,B;
+input C0;
+output [3:0] S;
+output C4;
+wire C1,C2,C3;
+full_adder fa0 (A[0],B[0],C0,S[0],C1);
+full_adder fa1 (A[1],B[1],C1,S[1],C2);
+full_adder fa2 (A[2],B[2],C2,S[2],C3);
+full_adder fa3 (A[3],B[3],C3,S[3],C4);
+endmodule
 
 •	fa_4bit_test.v → Test bench 
+module test_4bit;
+reg [3:0] A;
+reg [3:0] B; reg C0;
+wire [3:0] S; wire C4;
+fulladd_4bit dut (A,B,C0,S,C4);
+initial 
+begin
+A=4'b0011;B=4'b0011;C0=1'b0;
+#10;  A=4'b1011;B=4'b0111;C0=1'b1;
+#10; A=4'b1111;B=4'b1111;C0=1'b1;
+#10;
+end initial
+#50 $finish;
+endmodule
 
 */Program to design 4 bit adder by instantiating 1 bit Full adder.also add test bench program */
 Developed by: Register Number*/
 
 ## Functional Simulation: 
+![innnvoke](https://github.com/user-attachments/assets/06221125-5ea9-4e93-a239-60bf3e8122b1)
+
 
 	Invoke the cadence environment by type the below commands 
 
@@ -85,12 +118,16 @@ or
 	It will invoke the nclaunch window for functional simulation we can compile,elaborate and simulate it using Multiple Step .
 
 ### Fig 4:Setting Multi-step simulation
+![mul](https://github.com/user-attachments/assets/dc444b16-40b6-4e3a-95d6-e2354392e57d)
+
 
 	Select Multiple Step and then select “Create cds.lib File” .
 
 	Click the cds.lib file and save the file by clicking on Save option 
 
 ### Fig 5:cds.lib file Creation
+![cds](https://github.com/user-attachments/assets/f9a0e22d-c64c-46bd-a559-1b4079a13831)
+
 
 	Save cds.lib file and select the correct option for cds.lib file format based on the HDL Language and Libraries used. 
 
@@ -113,6 +150,8 @@ or
 	To perform the function simulation, the following three steps are involved Compilation, Elaboration and Simulation. 
 
 ### Fig 7: Nclaunch Window
+![nc](https://github.com/user-attachments/assets/c189a34b-e78b-4bec-8ecd-89c7906900ad)
+
 
 ## Step 1: Compilation:– Process to check the correct Verilog language syntax and usage 
 
@@ -132,6 +171,8 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation
 
 ### Fig 8: Compiled database in worklib
+![nc](https://github.com/user-attachments/assets/65ecb2af-0f15-41d9-81f7-41f9b26c039a)
+
 
 	After compilation it will come under worklib you can see in right side window
 
@@ -155,6 +196,8 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 	After elaboration the file will come under snapshot. Select the test bench and elaborate it.
 
 ### Fig 9: Elaboration Launch Option
+![test](https://github.com/user-attachments/assets/24352c12-f575-4aa2-9921-67b7fa136fc3)
+
 
 ## Step 3: Simulation: – Simulate with the given test vectors over a period of time to observe the output behaviour. 
 
@@ -167,10 +210,17 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 	Steps for simulation – Run the simulation command with simulator options
 
 ### Fig 10: Design Browser window for simulation
+![test](https://github.com/user-attachments/assets/2d9c1a78-58ed-47a6-9eac-7e50f5b3988b)
+
+
 
 ### Fig 11: Launching Simulation Waveform WindowSimulation Waveform Window
+![sim](https://github.com/user-attachments/assets/9a69b14a-f891-429f-9cf3-1944d917d2a4)
+
 
 ### Fig 12: Simulation Waveform Window
+![sim](https://github.com/user-attachments/assets/438b3002-e2a8-4c3b-893b-878ad370cf8b)
+
 
 ### Result:
 
